@@ -1,0 +1,33 @@
+.featured {
+  padding: 1em;
+  &--container {
+    max-width: 1300px;
+    margin-inline: auto;
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block: 1em;
+
+    p:first-child {
+      text-transform: capitalize;
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    .see-more {
+      display: flex;
+      gap: 0.6ch;
+      align-items: center;
+      color: #be123c;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+  }
+  &__main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2em 1em;
+  }
+}

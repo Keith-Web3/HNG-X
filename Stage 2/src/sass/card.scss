@@ -1,0 +1,57 @@
+[data-testid='movie-card'] {
+  width: max-content;
+  margin-inline: auto;
+  position: relative;
+  cursor: pointer;
+
+  .favourite {
+    position: absolute;
+    inset: 0.6em 1em auto auto;
+    display: none;
+  }
+
+  &:hover .favourite {
+    display: block;
+  }
+  [data-testid='movie-poster'] {
+    width: 100%;
+    height: 370px;
+    object-fit: cover;
+  }
+  .date {
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    gap: 0.5ch;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-block: 1em 0.3em;
+  }
+  [data-testid='movie-title'] {
+    color: #111827;
+    font-size: 1.125rem;
+    font-weight: 700;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ratings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #111827;
+    font-weight: 500;
+    margin-block: 0.2em;
+
+    p {
+      display: flex;
+      align-items: center;
+      gap: 1ch;
+    }
+  }
+  .genre {
+    color: #9ca3af;
+    font-weight: 500;
+  }
+}
