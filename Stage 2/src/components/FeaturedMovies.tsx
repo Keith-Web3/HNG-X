@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Card from './Card'
 import '../sass/featuredmovies.scss'
+import { Link } from 'react-router-dom'
 
 const FeaturedMovies = function () {
   const [data, setData] = useState<any[]>([])
@@ -30,13 +31,18 @@ const FeaturedMovies = function () {
           <div className="featured__main">
             {data?.map(movie => {
               return (
-                <Card
+                <Link
                   key={movie.id}
-                  img={movie.poster_path}
-                  title={movie.title}
-                  releaseDate={movie.release_date}
-                  rating={movie.vote_average}
-                />
+                  className="card-link"
+                  to={`/movies/${movie.id}`}
+                >
+                  <Card
+                    img={movie.poster_path}
+                    title={movie.title}
+                    releaseDate={movie.release_date}
+                    rating={movie.vote_average}
+                  />
+                </Link>
               )
             })}
           </div>

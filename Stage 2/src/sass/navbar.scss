@@ -4,6 +4,10 @@
   border: 1px solid rgba(0, 0, 0, 0.3);
   width: max-content;
   padding-block: 1.5em;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
 
   & > * {
     width: max-content;
@@ -13,6 +17,9 @@
   .logo {
     width: 150px;
   }
+  ul {
+    margin-block: auto;
+  }
   li {
     display: flex;
     align-items: center;
@@ -20,8 +27,21 @@
     gap: 1ch;
     color: #666666;
     font-weight: 500;
-    line-height: 3;
+    line-height: 4;
     width: 200px;
+
+    &:nth-child(2) {
+      background-color: rgba(190, 18, 60, 0.2);
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 3px;
+        background-color: #be123c;
+      }
+    }
 
     img {
       width: 25px;
@@ -37,6 +57,7 @@
     padding: 0.5em;
     width: 180px;
     padding-top: 1.3em;
+    margin-bottom: 1em;
 
     &__main {
       font-weight: 700;
