@@ -40,7 +40,7 @@ function MovieDetails() {
             <span className="seperator"></span>{' '}
             <p data-testid="movie-runtime">{data.runtime}</p>
             <div className="genres">
-              {data.genres?.map((genre: string) => (
+              {data.genres?.map((genre: { id: string; name: string }) => (
                 <p key={genre.id}>{genre.name}</p>
               ))}
             </div>

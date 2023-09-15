@@ -15,7 +15,7 @@ const Hero = function ({
               type="text"
               id="searchbar"
               onInput={e => {
-                setMovieQuery(e.target.value)
+                setMovieQuery((e.target as HTMLInputElement).value)
               }}
               placeholder="What do you want to watch?"
             />
