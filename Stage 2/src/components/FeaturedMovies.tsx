@@ -1,23 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useDeferredValue, useEffect, useState } from 'react'
 import Card from './Card'
 import '../sass/featuredmovies.scss'
 import { Link } from 'react-router-dom'
 
-const FeaturedMovies = function () {
+const FeaturedMovies = function ({ movieQuery }: { movieQuery: string }) {
   const [data, setData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const deferredQuery = useDeferredValue(movieQuery)
 
   useEffect(() => {
     setIsLoading(true)
+    const url =
+      deferredQuery.trim() === ''
+        ? 'https://api.themoviedb.org/3/trending/movie/day?language=en-US'
+        : `https://api.themoviedb.org/3/search/movie?query=${deferredQuery}&include_adult=false&language=en-US&page=1`
+
     fetch(url, options)
       .then(res => res.json())
       .then(json => {
         console.log(json.results)
-        setData(json.results)
+        setData(json.results.slice(0, 10))
       })
       .catch(err => console.error('error:' + err))
       .finally(() => setIsLoading(false))
-  }, [])
+  }, [deferredQuery])
   return (
     <div className="featured">
       <div className="featured--container">
@@ -52,7 +58,6 @@ const FeaturedMovies = function () {
   )
 }
 
-const url = 'https://api.themoviedb.org/3/trending/movie/day?language=en-US'
 const options = {
   method: 'GET',
   headers: {

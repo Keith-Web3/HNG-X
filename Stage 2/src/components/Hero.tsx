@@ -1,6 +1,10 @@
 import '../sass/hero.scss'
 
-const Hero = function () {
+const Hero = function ({
+  setMovieQuery,
+}: {
+  setMovieQuery: React.Dispatch<React.SetStateAction<string>>
+}) {
   return (
     <div className="hero">
       <div className="hero--container">
@@ -10,6 +14,9 @@ const Hero = function () {
             <input
               type="text"
               id="searchbar"
+              onInput={e => {
+                setMovieQuery(e.target.value)
+              }}
               placeholder="What do you want to watch?"
             />
             <img src="/search.svg" alt="search" />
