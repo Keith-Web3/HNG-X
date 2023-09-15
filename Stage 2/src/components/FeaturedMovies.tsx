@@ -12,7 +12,7 @@ const FeaturedMovies = function ({ movieQuery }: { movieQuery: string }) {
     setIsLoading(true)
     const url =
       deferredQuery.trim() === ''
-        ? 'https://api.themoviedb.org/3/trending/movie/day?language=en-US'
+        ? 'https://api.themoviedb.org/3/movie/top_rated'
         : `https://api.themoviedb.org/3/search/movie?query=${deferredQuery}&include_adult=false&language=en-US&page=1`
 
     fetch(url, options)
