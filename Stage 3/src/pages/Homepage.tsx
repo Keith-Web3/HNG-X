@@ -2,8 +2,17 @@ import '../sass/homepage.scss'
 import imagesData from '../data'
 import Img from '../ui/Img'
 import { useRef, useState } from 'react'
-import { DndContext, useDroppable, closestCenter } from '@dnd-kit/core'
-import { SortableContext } from '@dnd-kit/sortable'
+import {
+  DndContext,
+  useDroppable,
+  closestCenter,
+  useSensors,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+} from '@dnd-kit/core'
+import { SortableContext, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 
 function Homepage() {
   const [images, setImages] = useState(imagesData)
@@ -15,6 +24,14 @@ function Homepage() {
   const style = {
     color: isOver ? 'green' : undefined,
   }
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 50, tolerance: 10 },
+    }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
   return (
     <div className="homepage">
       <header>
@@ -34,6 +51,7 @@ function Homepage() {
 
       <main ref={setNodeRef} style={style}>
         <DndContext
+          sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={({ active, over }) => {
             const imagesCopy = [...images]
