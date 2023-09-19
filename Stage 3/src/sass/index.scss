@@ -1,0 +1,9 @@
+@use './resets' as *;
+
+body {
+  font-family: 'Open Sans';
+  #root {
+    min-height: 100vh;
+    display: grid;
+  }
+}
