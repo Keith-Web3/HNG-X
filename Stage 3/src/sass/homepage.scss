@@ -48,12 +48,25 @@
     gap: 1em;
     margin-top: 1em;
 
+    .img-container {
+      position: relative;
+    }
+    .tag {
+      position: absolute;
+      background-color: rgba(white, 0.8);
+      inset: 1em auto auto 1em;
+      padding: 0.2em;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+
     img,
     canvas {
       width: 100%;
       aspect-ratio: 3 / 2;
       object-fit: cover;
       border-radius: 5px;
+      cursor: grab;
     }
   }
 }

@@ -1,11 +1,20 @@
 import '../sass/homepage.scss'
 import imagesData from '../data'
 import Img from '../ui/Img'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { DndContext, useDroppable, closestCenter } from '@dnd-kit/core'
+import { SortableContext } from '@dnd-kit/sortable'
 
 function Homepage() {
   const [images, setImages] = useState(imagesData)
+  const [seachQuery, setSearchQuery] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { isOver, setNodeRef } = useDroppable({
+    id: 'droppable',
+  })
+  const style = {
+    color: isOver ? 'green' : undefined,
+  }
   return (
     <div className="homepage">
       <header>
@@ -17,42 +26,45 @@ function Homepage() {
             type="text"
             id="searchbar"
             name="searchbar"
+            ref={inputRef}
+            onChange={() => setSearchQuery(inputRef.current!.value)}
           />
         </label>
       </header>
 
-      <DragDropContext
-        onDragEnd={context => {
-          const { source, destination } = context
-          console.log(context)
-          if (!destination) return
-          if (destination?.index === source.index) return
+      <main ref={setNodeRef} style={style}>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={({ active, over }) => {
+            const imagesCopy = [...images]
+            if (!active.data.current || !over || !over.data.current) return
 
-          const duplicateImages = [...images]
+            const [draggedImage] = imagesCopy.splice(
+              active.data.current.sortable.index,
+              1
+            )
 
-          const [deletedImage] = duplicateImages.splice(source.index, 1)
-          duplicateImages.splice(destination.index, 0, deletedImage)
-
-          setImages(duplicateImages)
-        }}
-      >
-        <Droppable type="GROUP" droppableId="droppable">
-          {provided => (
-            <main {...provided.droppableProps} ref={provided.innerRef}>
-              {images.map((img, idx) => (
+            imagesCopy.splice(over.data.current.sortable.index, 0, draggedImage)
+            setImages(imagesCopy)
+          }}
+        >
+          <SortableContext
+            items={images.map(img => ({ ...img, id: img.blurhash }))}
+          >
+            {images
+              .filter(img => img.tag.includes(seachQuery))
+              .map(img => (
                 <Img
-                  key={idx}
+                  key={img.blurhash}
                   alt="image"
                   src={img.img}
                   blurhash={img.blurhash}
-                  idx={idx}
+                  tag={img.tag}
                 />
               ))}
-              {provided.placeholder}
-            </main>
-          )}
-        </Droppable>
-      </DragDropContext>
+          </SortableContext>
+        </DndContext>
+      </main>
     </div>
   )
 }

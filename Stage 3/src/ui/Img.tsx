@@ -1,5 +1,6 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { MouseEventHandler, useState } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
 import { BlurhashCanvas } from 'react-blurhash'
 
 interface ImgProps {
@@ -8,7 +9,7 @@ interface ImgProps {
   alt: string
   onClick?: React.MouseEventHandler<HTMLImageElement>
   className?: string
-  idx: number
+  tag: string
 }
 
 const Img = function ({
@@ -17,36 +18,41 @@ const Img = function ({
   alt,
   onClick,
   className,
-  idx,
+  tag,
 }: ImgProps) {
   const [isImgLoaded, setIsImgLoaded] = useState(false)
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: blurhash })
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  }
   return (
-    <Draggable draggableId={blurhash} index={idx}>
-      {provided => (
-        <>
-          {!isImgLoaded && (
-            <BlurhashCanvas
-              onClick={
-                onClick as MouseEventHandler<HTMLCanvasElement> | undefined
-              }
-              hash={blurhash}
-              punch={1}
-            />
-          )}
-          <img
-            style={{ display: isImgLoaded ? 'block' : 'none' }}
-            onLoad={() => setIsImgLoaded(true)}
-            src={src}
-            alt={alt}
-            onClick={onClick}
-            className={className}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          />
-        </>
+    <div
+      className="img-container"
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+    >
+      {!isImgLoaded && (
+        <BlurhashCanvas
+          onClick={onClick as MouseEventHandler<HTMLCanvasElement> | undefined}
+          hash={blurhash}
+          punch={1}
+        />
       )}
-    </Draggable>
+      <p className="tag">{tag}</p>
+      <img
+        style={{ display: isImgLoaded ? 'block' : 'none' }}
+        onLoad={() => setIsImgLoaded(true)}
+        src={src}
+        alt={alt}
+        onClick={onClick}
+        className={className}
+      />
+    </div>
   )
 }
 
